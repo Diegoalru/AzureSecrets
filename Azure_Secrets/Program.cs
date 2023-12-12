@@ -26,6 +26,8 @@ internal static class Program
         await DeleteUser();
         Console.WriteLine("Getting users...");
         await GetUsers();
+        Console.WriteLine("Resetting identity...");
+        await ResetIdentity();
         Console.WriteLine("Done.");
     }
 
