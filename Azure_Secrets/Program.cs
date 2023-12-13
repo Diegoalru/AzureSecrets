@@ -1,5 +1,4 @@
-﻿using System.Data;
-using Azure.Core;
+﻿using Azure.Core;
 using Azure.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.SqlClient.AlwaysEncrypted.AzureKeyVaultProvider;
@@ -10,8 +9,7 @@ internal static class Program
 {
     public static async Task Main(string[] args)
     {
-        Console.WriteLine("Testing connection...");
-        await TestConnection();
+        Console.WriteLine("~ Azure Secrets~");
         Console.WriteLine("Getting users...");
         await GetUsers();
         Console.WriteLine("Adding user...");
@@ -118,32 +116,11 @@ internal static class Program
         await connection.OpenAsync();
         return connection;
     }
-
-    /// <summary>
-    ///     Tests the connection to the database.
-    /// </summary>
-    /// <returns>
-    ///     A task representing the asynchronous operation.
-    /// </returns>
-    private static async Task TestConnection()
-    {
-        await using var connection = await GetConnection();
-
-        Console.WriteLine(connection.State == ConnectionState.Open
-            ? "Connected successfully."
-            : "Connection failed.");
-    }
-
+    
     #endregion
 
     #region CRUD Operations
-
-    /// <summary>
-    ///     Retrieves all users from the database.
-    /// </summary>
-    /// <returns>
-    ///     A task representing the asynchronous operation.
-    /// </returns>
+    
     private static async Task GetUsers()
     {
         await using var connection = await GetConnection();
@@ -155,13 +132,7 @@ internal static class Program
         while (await reader.ReadAsync())
             Console.WriteLine($"{reader["Id"]} - {reader["Name"]} - {reader["Email"]} - {reader["Password"]}");
     }
-
-    /// <summary>
-    ///     Adds a new user to the database.
-    /// </summary>
-    /// <returns>
-    ///     A task representing the asynchronous operation.
-    /// </returns>
+    
     private static async Task AddUser()
     {
         await using var connection = await GetConnection();
@@ -174,12 +145,6 @@ internal static class Program
         await command.ExecuteNonQueryAsync();
     }
 
-    /// <summary>
-    ///     This method updates the user's information in the database.
-    /// </summary>
-    /// <returns>
-    ///     A task representing the asynchronous operation.
-    /// </returns>
     private static async Task UpdateUser()
     {
         await using var connection = await GetConnection();
@@ -193,12 +158,6 @@ internal static class Program
         await command.ExecuteNonQueryAsync();
     }
 
-    /// <summary>
-    ///     Deletes a user from the Users table based on their ID.
-    /// </summary>
-    /// <returns>
-    ///     A Task representing the asynchronous operation.
-    /// </returns>
     private static async Task DeleteUser()
     {
         await using var connection = await GetConnection();
